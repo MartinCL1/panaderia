@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Bad+Script&family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Lexend:wght@100..900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.app {
+    font-family: "Lexend", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+
+input, a {
+    font-size: clamp(12px, 1.5vw, 14px);
+}
