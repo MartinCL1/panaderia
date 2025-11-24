@@ -15,7 +15,16 @@ a {
     color: black;
 }
 
+.titulo {
+    font-size: clamp(20px, 2.5vw, 40px);
+    color: #3b3b3b;
+}
 
 input, a {
     font-size: clamp(12px, 1.5vw, 14px);
+}
+
+button {
+    cursor: pointer;
+    font-size: clamp(10px, 1.5vw, 15px);
 }

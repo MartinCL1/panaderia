@@ -1,0 +1,39 @@
+.principal {
+    height: 100vh;
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+}
+
+.principal-wrapper {
+    width: 90%;
+    max-width: 1000px;
+}
+
+.icono {
+    cursor: pointer;
+    padding: 4px 12px;
+    border-radius: 4px;
+    transition: .5s background-color;
+}
+
+.opciones-informacion {
+    display: flex;
+    gap: 12px;
+}
+
+.icono.eliminar:hover {
+    background-color: rgb(213, 30, 30);
+}
+
+.icono.anadir:hover {
+    background-color: rgb(40, 128, 5);
+}
+
+.icono.aceptar:hover {
+    background-color: rgb(40, 128, 5);
+}
+
+.icono:hover svg {
+    stroke: white;
+}

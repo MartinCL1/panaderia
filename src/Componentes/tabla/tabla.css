@@ -1,0 +1,97 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    user-select: none;
+}
+
+td, th {
+    text-align: center;
+    resize: none;
+    white-space: nowrap;
+    white-space-collapse: collapse;
+    overflow: hidden;
+    border: 1px solid #628281c5;
+}
+
+th {
+    color: #0c563f;
+    font-size: clamp(12px, 2.5vw, 16px);
+}
+
+td {
+    font-size: clamp(10px, 2.5vw, 16px);
+    color: #1e2b29;
+    height: min-content;
+    max-width: 100px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+tr {
+    max-height: 50px;
+    font-weight: 300;
+}
+
+tbody tr {
+    cursor: pointer;
+}
+
+.agregar-producto {
+    padding: 4px 16px;
+    background-color: #0c563f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: auto;
+    width: max-content;
+}
+
+.agregar-producto:hover {
+    background-color: #2d4944;
+}
+
+.opciones {
+    display: flex;
+    width: 90%;
+    max-width: 800px;
+    gap: 8px;
+}
+
+.control-informacion {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    gap: 2%;
+}
+
+.mostrar-informacion {
+    width: 50%;
+    max-width: 100px;
+    color: #353b3a;
+    border-radius: 5px;
+    border: none;
+}
+
+.mostrar-informacion:hover {
+    border: 1px solid rgba(0, 0, 0, 0.081);
+}
+
+.seleccionado {
+    background-color: #889fa5;
+}
+
+tr input[type="text"] {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: none;
+    outline-style: none;
+    color: #1e3532;
+    padding: 10px 12px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+tr input[type="checkbox"] {
+    accent-color: #0c563f;
+}

@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import "./autenticacion.css";
 import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../../../hooks/useAuth";
+import usePost from "../../../hooks/usePost";
 
 const Login = () => {
+  const { acceso, cargando } = useAuth("http://localhost:3500/login");
+  const {datos, loading, sendPostRequest, error} = usePost();
+
   const tiempoLocal = new Date();
   const [saludo, setSaludo] = useState("");
   const [credenciales, setCredenciales] = useState({
@@ -12,46 +17,33 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    (async () => {
-      const data = await fetch("http://localhost:3500/login", {
-        credentials: "include",
-      });
-      const acceso = await data.json();
-      if (acceso.acceso) return navigate("/home", {replace: true});
-    })();
-
-    const horas = tiempoLocal.getHours();
-
-    if (horas >= 0 && horas < 12) {
-      return setSaludo("Buenos dias");
-    } else if (horas >= 12 && horas <= 18) {
-      return setSaludo("Buenas tardes");
-    } else return setSaludo("Buenas noches");
-  }, []);
-
-  const iniciarSesion = async (e) => {
-    e.preventDefault();
-    const data = await fetch("http://localhost:3500/login/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify({
-        nombreUsuario: credenciales.nombreUsuario,
-        contrasena: credenciales.contrasena,
-      }),
-    });
-
-    const acceso = await data.json();
-    if (acceso.acceso) {
-      navigate("/home");
+    if (!acceso && !cargando) {
+      const horas = tiempoLocal.getHours();
+      if (horas >= 0 && horas < 12) {
+        return setSaludo("Buenos dias");
+      } else if (horas >= 12 && horas <= 18) {
+        return setSaludo("Buenas tardes");
+      } else return setSaludo("Buenas noches");
     }
+    if (acceso && !cargando) return navigate("/home"); 
+
+  }, [acceso, cargando]);
+
+  const iniciarSesion = (e) => {
+    e.preventDefault();
+    sendPostRequest("http://localhost:3500/login", credenciales);
   };
+
+  useEffect(() => {
+    if(!error && !loading && datos) {
+      navigate('/home', {replace: true})
+    }
+  }, [datos, loading, error])
+
 
   const cambiarEstado = (e) => {
     const propiedad = e.target.name;
-
     setCredenciales({ ...credenciales, [propiedad]: e.target.value });
-    console.log(credenciales);
   };
 
   return (
