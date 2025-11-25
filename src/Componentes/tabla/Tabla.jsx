@@ -1,15 +1,19 @@
-import FilaTabla from './FilaTabla';
-import './tabla.css'
+import FilaTabla from "./FilaTabla";
+import "./tabla.css";
 
-const Tabla = ({mostrarSeleccion, data, seleccionarFila, eliminarSeleccion}) => {
-
+const Tabla = ({
+  mostrarSeleccion,
+  data,
+  seleccionarEliminarFila,
+  eliminarSeleccion,
+  idSeleccionado,
+  seleccionarFila,
+}) => {
   return (
     <table>
       <thead>
         <tr>
-          {
-            mostrarSeleccion && <th></th>
-          }
+          {mostrarSeleccion && <th></th>}
           <th>Producto</th>
           <th>Existencia</th>
           <th>De hoy</th>
@@ -18,11 +22,17 @@ const Tabla = ({mostrarSeleccion, data, seleccionarFila, eliminarSeleccion}) => 
         </tr>
       </thead>
       <tbody>
-        {
-          data.map((producto, index) => (
-            <FilaTabla key={index} eliminarSeleccion={eliminarSeleccion} producto={producto} mostrarSeleccion={mostrarSeleccion} seleccionarFila={seleccionarFila} />
-          ))
-        }
+        {data.map((producto, index) => (
+          <FilaTabla
+            key={index}
+            eliminarSeleccion={eliminarSeleccion}
+            producto={producto}
+            mostrarSeleccion={mostrarSeleccion}
+            seleccionarEliminarFila={seleccionarEliminarFila}
+            idSeleccionado={idSeleccionado}
+            seleccionarFila={seleccionarFila}
+          />
+        ))}
       </tbody>
     </table>
   );

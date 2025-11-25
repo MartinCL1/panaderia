@@ -1,38 +1,29 @@
 import { useRef } from "react";
 
-const FilaTabla = ({ mostrarSeleccion, producto, seleccionarFila, eliminarSeleccion }) => {
+const FilaTabla = ({ mostrarSeleccion, producto, seleccionarEliminarFila, eliminarSeleccion, seleccionarFila, idSeleccionado }) => {
   const referencia = useRef(null)
 
   const marcarFila = (e) => {
-    if (e.target.checked) {
+    seleccionarEliminarFila(producto.id)
+
+    if (!e.target.checked) {
       eliminarSeleccion(producto.id)
       return
     }
-    seleccionarFila(producto.id)
   }
 
   return (
-    <tr>
+    <tr onClick={() => seleccionarFila(producto.id)} className={idSeleccionado === producto.id ? "seleccionado" : ""} >
       {
         mostrarSeleccion && <td>
-          <input type="checkbox" ref={referencia} onClick={marcarFila}/>
+          <input type="checkbox" ref={referencia} onClick={marcarFila} />
         </td>
       }
-      <td>
-        <input type="text" name="nombre" value={producto.nombre} />
-      </td>
-      <td>
-        <input type="text" name="existente" value={producto.existente} />
-      </td>
-      <td>
-        <input type="text" name="actual" value={producto.actual} />
-      </td>
-      <td>
-        <input type="text" name="vendido" value={producto.vendido} />
-      </td>
-      <td>
-        <input type="text" name="precio_unidad" value={producto.precio_unidad} />
-      </td>
+      <td> {producto.nombre} </td>
+      <td> {producto.existente} </td>
+      <td> {producto.actual} </td>
+      <td> {producto.vendido} </td>
+      <td> Q. {producto.precio_unidad} </td>
     </tr>
   )
 }

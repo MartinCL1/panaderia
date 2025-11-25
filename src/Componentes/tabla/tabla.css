@@ -21,15 +21,12 @@ th {
 td {
     font-size: clamp(10px, 2.5vw, 16px);
     color: #1e2b29;
-    height: min-content;
-    max-width: 100px;
     white-space: nowrap;
     overflow: hidden;
-}
-
-tr {
-    max-height: 50px;
+    text-overflow: ellipsis;
+    padding: 10px;
     font-weight: 300;
+    text-transform: capitalize;
 }
 
 tbody tr {
@@ -77,19 +74,7 @@ tbody tr {
 }
 
 .seleccionado {
-    background-color: #889fa5;
-}
-
-tr input[type="text"] {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    border: none;
-    outline-style: none;
-    color: #1e3532;
-    padding: 10px 12px;
-    text-align: center;
-    text-transform: capitalize;
+    background-color: #8ca2aa;
 }
 
 tr input[type="checkbox"] {
