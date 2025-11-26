@@ -2,7 +2,9 @@ import useGet from "../../../hooks/useGet";
 import { useNavigate } from "react-router-dom";
 import "./principal.css";
 import Tabla from "../tabla/Tabla";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { useEffect } from "react";
+import Anadir from "../modal/Anadir";
 
 const Principal = () => {
   const { loading, acceso, data } = useGet("http://localhost:3500/principal");
@@ -10,15 +12,25 @@ const Principal = () => {
   const [seleccion, setSeleccion] = useState(false); // Si la seleccion esta activa quiere decir que va a eliminar al menos en esta version es la unica accion que se puede hacer.
   const [idSeleccionados, setIdSeleccionados] = useState([]);
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  const [productos, setProductos] = useState([])
+  const [mostrarAnadir, setMostrarAnadir] = useState(false)
 
   if (acceso === false && loading === false) {
     navigate("/login", { replace: true });
     return;
   }
 
+  useEffect(() => {
+    setProductos(data)
+  }, [data])
+
   const eliminarFilas = () => {
     setSeleccion(true);
   };
+
+  const cerrarModal = () => {
+    setMostrarAnadir(false)
+  }
 
   const confirmarEliminar = async() => {
 
@@ -30,13 +42,15 @@ const Principal = () => {
       },
       body: JSON.stringify({ id: idSeleccionados })
     })
-
+    
     const informacionJson = await informacion.json();
-    console.log(informacionJson);
+    if(informacionJson.acceso) {
+      setProductos(productos.filter((producto) => !idSeleccionados.includes(producto.id)))
+      setIdSeleccionados([])
+    }
   };
 
   // Acciones con la tabla.
-
   const seleccionarEliminarFila = (id) => {
     if (idSeleccionados.includes(id)) return;
     setIdSeleccionados([...idSeleccionados, id]);
@@ -50,19 +64,27 @@ const Principal = () => {
   };
 
   const seleccionarFila = (id) => {
-    setProductoSeleccionado(id);
+    setProductoSeleccionado(id); 
+  }
+
+  const anadirProducto = () => {
+    setMostrarAnadir(true)
+  }
+
+  const anadirproducto = (nuevoProducto) => {
+    setProductos([...productos, nuevoProducto])
   }
 
   return (
     <div className="principal flex-center">
       <h1 className="titulo">Lista de Productos</h1>
       {loading === true && <h2>Cargando...</h2>}
-      {acceso == true && data != false && (
+      {acceso == true && productos && (
         <div className="principal-wrapper flex-center">
           {
             <Tabla
               mostrarSeleccion={seleccion}
-              data={data}
+              productos={productos}
               seleccionarEliminarFila={seleccionarEliminarFila}
               eliminarSeleccion={eliminarSeleccion}
               idSeleccionado={productoSeleccionado}
@@ -79,7 +101,7 @@ const Principal = () => {
 
         <div className="opciones-informacion">
           {!seleccion && (
-            <span className="icono anadir">
+            <span className="icono anadir" onClick={anadirProducto}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -98,7 +120,7 @@ const Principal = () => {
           )}
 
           {!seleccion && (
-            <span className="icono anadir">
+            <span className="icono anadir" >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -172,6 +194,7 @@ const Principal = () => {
           )}
         </div>
       </div>
+      {mostrarAnadir && <Anadir cerrarModal={cerrarModal} anadirProducto={anadirproducto} /> }
     </div>
   );
 };

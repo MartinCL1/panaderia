@@ -33,20 +33,6 @@ tbody tr {
     cursor: pointer;
 }
 
-.agregar-producto {
-    padding: 4px 16px;
-    background-color: #0c563f;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-left: auto;
-    width: max-content;
-}
-
-.agregar-producto:hover {
-    background-color: #2d4944;
-}
-
 .opciones {
     display: flex;
     width: 90%;

@@ -19,7 +19,6 @@ const useGet = (url) => {
       setLoading(false);
       if (!responseStatus.acceso) return setAcceso(false);
       setAcceso(true);
-      console.log(responseStatus.informacion)
       setData(responseStatus.informacion); // informacion o producto.
       return;
     } catch {

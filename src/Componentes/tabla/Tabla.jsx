@@ -3,7 +3,7 @@ import "./tabla.css";
 
 const Tabla = ({
   mostrarSeleccion,
-  data,
+  productos,
   seleccionarEliminarFila,
   eliminarSeleccion,
   idSeleccionado,
@@ -22,7 +22,7 @@ const Tabla = ({
         </tr>
       </thead>
       <tbody>
-        {data.map((producto, index) => (
+        {productos.map((producto, index) => (
           <FilaTabla
             key={index}
             eliminarSeleccion={eliminarSeleccion}

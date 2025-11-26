@@ -26,14 +26,90 @@
     background-color: rgb(213, 30, 30);
 }
 
-.icono.anadir:hover {
-    background-color: rgb(40, 128, 5);
-}
-
+.icono.anadir:hover,
 .icono.aceptar:hover {
     background-color: rgb(40, 128, 5);
 }
 
 .icono:hover svg {
     stroke: white;
+}
+
+
+.anadir-modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.anadir-modal span {
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.modal-contenedor {
+    width: 95%;
+    max-width: 500px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.wrapper-input {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.wrapper-input input {
+    padding: 4px;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.377);
+    outline-style: none;
+}
+
+.wrapper-botones {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 5%;
+}
+
+.wrapper-botones button {
+    width: 50%;
+    border-radius: 4px;
+    border: none;
+    color: rgb(8, 8, 8);
+    padding: 4px;
+    box-shadow: 1px 2px 4px rgba(46, 44, 44, 0.692);
+}
+
+.cancelar {
+    background-color: rgb(213, 30, 30);
+}
+
+.cancelar:hover {
+    background-color: rgb(167, 27, 27);
+}
+
+.aceptar {
+    background-color: rgb(40, 128, 5);
+}
+
+.aceptar:hover {
+    background-color: rgb(29, 100, 1);
+} 
+
+.cancelar:hover,
+.aceptar:hover {
+    color: white;
 }
