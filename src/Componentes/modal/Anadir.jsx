@@ -20,6 +20,11 @@ const Anadir = ({cerrarModal, anadirProducto}) => {
     const agregarProducto = async (e) => {
         e.preventDefault()
         await sendPostRequest("http://localhost:3500/principal/agregarProducto", producto)
+    }
+
+
+    if(datos != false ) {
+        anadirProducto(producto)
         cerrarModal()
     }
 

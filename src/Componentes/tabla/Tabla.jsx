@@ -1,14 +1,18 @@
+import { useContext } from "react";
+import { Contexto } from "../../Contexto";
 import FilaTabla from "./FilaTabla";
 import "./tabla.css";
 
 const Tabla = ({
   mostrarSeleccion,
-  productos,
   seleccionarEliminarFila,
   eliminarSeleccion,
   idSeleccionado,
   seleccionarFila,
 }) => {
+
+  const { productos} = useContext(Contexto)
+
   return (
     <table>
       <thead>
