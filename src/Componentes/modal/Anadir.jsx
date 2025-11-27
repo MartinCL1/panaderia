@@ -4,10 +4,9 @@ import {v4 as uuidv4} from 'uuid'
 import { useContext } from "react"
 import { Contexto } from "../../Contexto"
 
-const Anadir = ({ cerrarModal, anadirProducto }) => {
+const Anadir = ({ cerrarModal }) => {
     const { sendPostRequest } = usePost()
     const { productos, setProductos } = useContext(Contexto)
-
     const [producto, setProducto] = useState({
         id: uuidv4(),
         nombre: "",
