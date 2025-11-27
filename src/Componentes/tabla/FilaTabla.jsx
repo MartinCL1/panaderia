@@ -8,7 +8,6 @@ const FilaTabla = ({ producto, seleccionarEliminarFila, eliminarSeleccion, selec
   const marcarFila = (e) => {
     seleccionarEliminarFila(producto.id)
     console.log(producto)
-    console.log('Holaaaala mundo')
     if (!e.target.checked) {
       eliminarSeleccion(producto.id)
       return
