@@ -4,20 +4,18 @@ import FilaTabla from "./FilaTabla";
 import "./tabla.css";
 
 const Tabla = ({
-  mostrarSeleccion,
   seleccionarEliminarFila,
   eliminarSeleccion,
-  idSeleccionado,
   seleccionarFila,
 }) => {
 
-  const { productos} = useContext(Contexto)
+  const { productos, seleccion} = useContext(Contexto)
 
   return (
     <table>
       <thead>
         <tr>
-          {mostrarSeleccion && <th></th>}
+          {seleccion && <th></th>}
           <th>Producto</th>
           <th>Existencia</th>
           <th>De hoy</th>
@@ -31,9 +29,7 @@ const Tabla = ({
             key={index}
             eliminarSeleccion={eliminarSeleccion}
             producto={producto}
-            mostrarSeleccion={mostrarSeleccion}
             seleccionarEliminarFila={seleccionarEliminarFila}
-            idSeleccionado={idSeleccionado}
             seleccionarFila={seleccionarFila}
           />
         ))}

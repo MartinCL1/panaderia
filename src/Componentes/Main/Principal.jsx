@@ -2,13 +2,12 @@ import useGet from "../../../hooks/useGet";
 import { useNavigate } from "react-router-dom";
 import "./principal.css";
 import Tabla from "../tabla/Tabla";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useEffect } from "react";
 import Anadir from "../modal/Anadir";
 import { Contexto } from "../../Contexto";
-import React from "react";
 
-const Principal = React.memo(function Principal () {
+const Principal = () => {
   const { loading, acceso, data } = useGet("http://localhost:3500/principal");
   const navigate = useNavigate();
   const [seleccion, setSeleccion] = useState(false); // Si la seleccion esta activa quiere decir que va a eliminar al menos en esta version es la unica accion que se puede hacer.
@@ -131,9 +130,9 @@ const Principal = React.memo(function Principal () {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="#353b3a"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
                   <polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
                 </svg>
@@ -197,11 +196,12 @@ const Principal = React.memo(function Principal () {
             )}
           </div>
         </div>
+
         {mostrarAnadir && <Anadir cerrarModal={cerrarModal} anadirProducto={anadirproducto} />}
+
       </div>
     </Contexto.Provider>
-
   );
-})
+}
 
 export default Principal;

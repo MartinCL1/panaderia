@@ -1,7 +1,9 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
+import { Contexto } from "../../Contexto";
 
-const FilaTabla = ({ mostrarSeleccion, producto, seleccionarEliminarFila, eliminarSeleccion, seleccionarFila, idSeleccionado }) => {
+const FilaTabla = ({ producto, seleccionarEliminarFila, eliminarSeleccion, seleccionarFila }) => {
   const referencia = useRef(null)
+  const { productoSeleccionado, seleccion } = useContext(Contexto)
 
   const marcarFila = (e) => {
     seleccionarEliminarFila(producto.id)
@@ -13,9 +15,9 @@ const FilaTabla = ({ mostrarSeleccion, producto, seleccionarEliminarFila, elimin
   }
 
   return (
-    <tr onClick={() => seleccionarFila(producto.id)} className={idSeleccionado === producto.id ? "seleccionado" : ""} >
+    <tr onClick={() => seleccionarFila(producto.id)} className={productoSeleccionado === producto.id ? "seleccionado" : ""} >
       {
-        mostrarSeleccion && <td>
+        seleccion && <td>
           <input type="checkbox" ref={referencia} onClick={marcarFila} />
         </td>
       }
