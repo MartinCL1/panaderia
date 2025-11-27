@@ -1,11 +1,15 @@
 import { useState } from "react"
 import usePost from "../../../hooks/usePost"
+import {v4 as uuidv4} from 'uuid'
+import { useContext } from "react"
+import { Contexto } from "../../Contexto"
 
 const Anadir = ({ cerrarModal, anadirProducto }) => {
-    const { sendPostRequest, loading, datos } = usePost()
+    const { sendPostRequest } = usePost()
+    const { productos, setProductos } = useContext(Contexto)
 
     const [producto, setProducto] = useState({
-        id: "",
+        id: uuidv4(),
         nombre: "",
         precio_unidad: "",
         existente: "",
@@ -17,16 +21,11 @@ const Anadir = ({ cerrarModal, anadirProducto }) => {
         e.preventDefault()
         setProducto({ ...producto, [e.target.name]: e.target.value })
     }
-
+    
     const agregarProducto = async (e) => {
         e.preventDefault()
-        setProducto({})
-        await sendPostRequest("http://localhost:3500/principal/agregarProducto", producto)
-    }
-
-
-    if (datos != false) {
-        anadirProducto(producto)
+        productos.length > 0 ? setProductos([...productos, producto]) : setProductos([...[], producto])
+        sendPostRequest('http://localhost:3500/principal/agregarProducto', producto);
         cerrarModal()
     }
 

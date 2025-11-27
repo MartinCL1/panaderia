@@ -8,7 +8,7 @@ import Anadir from "../modal/Anadir";
 import { Contexto } from "../../Contexto";
 
 const Principal = () => {
-  const { loading, acceso, data } = useGet("http://localhost:3500/principal");
+  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/principal");
   const navigate = useNavigate();
   const [seleccion, setSeleccion] = useState(false); // Si la seleccion esta activa quiere decir que va a eliminar al menos en esta version es la unica accion que se puede hacer.
   const [idSeleccionados, setIdSeleccionados] = useState([]);
@@ -34,8 +34,7 @@ const Principal = () => {
   }
 
   const confirmarEliminar = async () => {
-
-    const informacion = await fetch('http://localhost:3500/principal', {
+    const informacion = await fetch('https://react-rho-olive.vercel.app/principal', {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -46,10 +45,12 @@ const Principal = () => {
 
     const informacionJson = await informacion.json();
     if (informacionJson.acceso) {
-      setProductos(productos.filter((producto) => !idSeleccionados.includes(producto.id)))
+      const copiaProductos = productos.filter((producto) => !idSeleccionados.includes(producto.id))
+      setProductos(copiaProductos)
       setIdSeleccionados([])
+      setSeleccion(false)
     }
-  };
+  }
 
   // Acciones con la tabla.
   const seleccionarEliminarFila = (id) => {
@@ -72,12 +73,8 @@ const Principal = () => {
     setMostrarAnadir(true)
   }
 
-  const anadirproducto = (nuevoProducto) => {
-    setProductos([...productos, nuevoProducto])
-  }
-
   return (
-    <Contexto.Provider value={{ productos, setProductos }}>
+    <Contexto.Provider value={{ productos, setProductos, productoSeleccionado, seleccion, setSeleccion}}>
       <div className="principal flex-center">
         <h1 className="titulo">Lista de Productos</h1>
         {loading === true && <h2>Cargando...</h2>}
@@ -85,16 +82,14 @@ const Principal = () => {
           <div className="principal-wrapper flex-center">
             {
               <Tabla
-                mostrarSeleccion={seleccion}
-                productos={productos}
                 seleccionarEliminarFila={seleccionarEliminarFila}
                 eliminarSeleccion={eliminarSeleccion}
-                idSeleccionado={productoSeleccionado}
                 seleccionarFila={seleccionarFila}
               />
             }
           </div>
         )}
+
         <div className="opciones">
           <div className="control-informacion">
             <button className="mostrar-informacion">Atras</button>
@@ -197,7 +192,7 @@ const Principal = () => {
           </div>
         </div>
 
-        {mostrarAnadir && <Anadir cerrarModal={cerrarModal} anadirProducto={anadirproducto} />}
+        {mostrarAnadir && <Anadir cerrarModal={cerrarModal} />}
 
       </div>
     </Contexto.Provider>

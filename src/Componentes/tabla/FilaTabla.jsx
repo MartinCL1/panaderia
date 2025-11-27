@@ -7,6 +7,7 @@ const FilaTabla = ({ producto, seleccionarEliminarFila, eliminarSeleccion, selec
 
   const marcarFila = (e) => {
     seleccionarEliminarFila(producto.id)
+    console.log(producto)
 
     if (!e.target.checked) {
       eliminarSeleccion(producto.id)
