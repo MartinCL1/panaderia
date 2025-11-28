@@ -12,7 +12,7 @@
 
 .icono {
     cursor: pointer;
-    padding: 4px 12px;
+    padding: 8px 12px;
     border-radius: 4px;
     transition: .5s background-color;
 }
