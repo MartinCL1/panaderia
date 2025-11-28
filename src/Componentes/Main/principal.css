@@ -12,7 +12,7 @@
 
 .icono {
     cursor: pointer;
-    padding: 8px 12px;
+    padding: 4px 12px;
     border-radius: 4px;
     transition: .5s background-color;
 }
@@ -89,7 +89,7 @@
     border-radius: 4px;
     border: none;
     color: rgb(8, 8, 8);
-    padding: 4px;
+    padding: 8px 4px;
     box-shadow: 1px 2px 4px rgba(46, 44, 44, 0.692);
 }
 
