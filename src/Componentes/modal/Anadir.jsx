@@ -24,7 +24,7 @@ const Anadir = ({ cerrarModal }) => {
     const agregarProducto = async (e) => {
         e.preventDefault()
         productos.length > 0 ? setProductos([...productos, producto]) : setProductos([...[], producto])
-        sendPostRequest('http://localhost:3500/principal/agregarProducto', producto);
+        sendPostRequest('https://react-rho-olive.vercel.app/principal/agregarProducto', producto);
         cerrarModal()
     }
 
