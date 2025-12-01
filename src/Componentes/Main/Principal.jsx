@@ -2,14 +2,14 @@ import useGet from "../../../hooks/useGet";
 import { useNavigate } from "react-router-dom";
 import "./principal.css";
 import Tabla from "../tabla/Tabla";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import ModalProducto from "../modal/ModalProducto";
 import { Contexto } from "../../Contexto";
 import usePost from '../../../hooks/usePost'
 
 const Principal = () => {
-  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/");
+  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/login");
   const navigate = useNavigate();
   const [seleccion, setSeleccion] = useState(false); // Si la seleccion esta activa quiere decir que va a eliminar al menos en esta version es la unica accion que se puede hacer.
   const [idSeleccionados, setIdSeleccionados] = useState([]);
@@ -112,7 +112,7 @@ const Principal = () => {
       console.log("Producto Editado correctamente")
     }
   }
-
+  
   const actualizarProductoExistente = (nuevoProducto) => {
     const nuevoProductoCreado = { id: productoSeleccionado.id, ...nuevoProducto }
     const copiaProductos = productos.map((producto) => producto.id === productoSeleccionado.id ? nuevoProductoCreado : producto)
@@ -122,7 +122,14 @@ const Principal = () => {
     return nuevoProductoCreado;
   }
 
-  
+  useEffect(() => { // se calculan precios solo si productos cambia}
+    let total = 0;
+    productos?.map(producto => {
+      total += producto.precio_unidad * producto.existente
+    })
+
+    setTotal(prev => prev = total)
+  }, [productos])
 
   return (
     <Contexto.Provider value={{ productos, setProductos, productoSeleccionado, seleccion, setSeleccion }}>
