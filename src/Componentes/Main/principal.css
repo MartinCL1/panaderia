@@ -121,5 +121,5 @@
 }
 
 span {
-    font-size: clamp(10px, 2vw, 16px);
+    font-size: clamp(8px, 2vw, 14px);
 }
