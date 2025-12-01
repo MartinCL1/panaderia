@@ -26,7 +26,6 @@ const Principal = () => {
   }
 
   useEffect(() => {
-    console.log('entra aca')
     setProductos(data);
   }, [data])
 
