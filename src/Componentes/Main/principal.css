@@ -120,6 +120,6 @@
     font-size: 20px;
 }
 
-span {
-    font-size: clamp(8px, 2vw, 14px);
+.venta-total {
+    font-size: clamp(5px, 2vw, 10px);
 }
