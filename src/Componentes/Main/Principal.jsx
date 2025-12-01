@@ -122,15 +122,6 @@ const Principal = () => {
     return nuevoProductoCreado;
   }
 
-  useEffect(() => { // se calculan precios solo si productos cambia}
-    let total = 0;
-    productos?.map(producto => {
-      total += producto.precio_unidad * producto.existente
-    })
-
-    setTotal(prev => prev = total)
-  }, [productos, total])
-
   return (
     <Contexto.Provider value={{ productos, setProductos, productoSeleccionado, seleccion, setSeleccion }}>
       <div className="principal flex-center">
