@@ -60,7 +60,7 @@ tbody tr {
 }
 
 .seleccionado {
-    background-color: #8ca2aa;
+    background-color: #8ca2aac5;
 }
 
 tr input[type="checkbox"] {
