@@ -121,5 +121,5 @@
 }
 
 .venta-total {
-    font-size: clamp(5px, 2vw, 16px);
+    font-size: clamp(10px, 2.5vw, 16px);
 }
