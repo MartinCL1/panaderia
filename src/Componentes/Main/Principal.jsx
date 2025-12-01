@@ -113,7 +113,6 @@ const Principal = () => {
     }
   }
 
-
   const actualizarProductoExistente = (nuevoProducto) => {
     const nuevoProductoCreado = { id: productoSeleccionado.id, ...nuevoProducto }
     const copiaProductos = productos.map((producto) => producto.id === productoSeleccionado.id ? nuevoProductoCreado : producto)
@@ -123,14 +122,7 @@ const Principal = () => {
     return nuevoProductoCreado;
   }
 
-  useEffect(() => { // se calculan precios solo si productos cambia}
-    let total = 0;
-    productos?.map(producto => {
-      total += producto.precio_unidad * producto.existente
-    })
-
-    setTotal(prev => prev = total)
-  }, [productos])
+  
 
   return (
     <Contexto.Provider value={{ productos, setProductos, productoSeleccionado, seleccion, setSeleccion }}>
@@ -254,6 +246,7 @@ const Principal = () => {
         {mostrarModalAnadir && <ModalProducto cerrarModal={cerrarModalAnadir} funcionModal={agregarProducto} />}
         {/** Modal para editar el producto */}
         {mostrarModalEditar && <ModalProducto cerrarModal={cerrarModalEditar} funcionModal={editarProductoSeleccionado} productoSeleccionado={productoSeleccionado} />}
+        
         <div className="flex-center" style={{flexDirection: 'column'}}>
           <span className="venta-total">Total a recibir: Q{total}</span>
           {productoSeleccionado && <span className="venta-total">Total producto seleccionado: Q{productoSeleccionado.precio_unidad * productoSeleccionado.existente}</span>}
