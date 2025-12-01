@@ -42,7 +42,7 @@ const Principal = () => {
   }
 
   const confirmarEliminar = async () => {
-    const informacion = await fetch('https://react-rho-olive.vercel.app/', {
+    const informacion = await fetch('https://react-rho-olive.vercel.app/principal', {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -91,7 +91,7 @@ const Principal = () => {
 
     productos.length > 0 ? setProductos(productos => [...productos, producto]) : setProductos([...[], producto])
     cerrarModalAnadir()
-    await sendPostRequest('https://react-rho-olive.vercel.app/agregarProducto', producto);
+    await sendPostRequest('https://react-rho-olive.vercel.app/principal/agregarProducto', producto);
   }
 
   const editarProductoSeleccionado = async (e, nuevoProducto) => {
@@ -99,7 +99,7 @@ const Principal = () => {
     // Creo el codigo de un put.
     const productoActualizado = actualizarProductoExistente(nuevoProducto);
 
-    const solicitud = await fetch("https://react-rho-olive.vercel.app/actualizarProducto", {
+    const solicitud = await fetch("https://react-rho-olive.vercel.app/principal/actualizarProducto", {
       method: "PUT",
       credentials: "include",
       headers: {
