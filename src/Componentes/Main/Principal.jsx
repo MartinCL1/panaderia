@@ -4,17 +4,21 @@ import "./principal.css";
 import Tabla from "../tabla/Tabla";
 import { useCallback, useState } from "react";
 import { useEffect } from "react";
-import Anadir from "../modal/Anadir";
+import ModalProducto from "../modal/ModalProducto";
 import { Contexto } from "../../Contexto";
+import usePost from '../../../hooks/usePost'
 
 const Principal = () => {
-  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/principal/");
+  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/");
   const navigate = useNavigate();
   const [seleccion, setSeleccion] = useState(false); // Si la seleccion esta activa quiere decir que va a eliminar al menos en esta version es la unica accion que se puede hacer.
   const [idSeleccionados, setIdSeleccionados] = useState([]);
-  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null)  // No almacena el producto, almancena el Id, se debe de cambiar el nombre
   const [productos, setProductos] = useState([])
-  const [mostrarAnadir, setMostrarAnadir] = useState(false)
+  const [mostrarModalAnadir, setMostrarModalAnadir] = useState(false)
+  const { sendPostRequest } = usePost();
+  const [mostrarModalEditar, setMostrarModalEditar] = useState(false)
+  const [total, setTotal] = useState(0)
 
   if (acceso === false && loading === false) {
     navigate("/login", { replace: true });
@@ -22,19 +26,23 @@ const Principal = () => {
   }
 
   useEffect(() => {
-    setProductos(data)
+    setProductos(data);
   }, [data])
 
   const eliminarFilas = () => {
     setSeleccion(true);
   };
 
-  const cerrarModal = () => {
-    setMostrarAnadir(false)
+  const cerrarModalAnadir = () => {
+    setMostrarModalAnadir(false)
+  }
+
+  const cerrarModalEditar = () => {
+    setMostrarModalEditar(false)
   }
 
   const confirmarEliminar = async () => {
-    const informacion = await fetch('https://react-rho-olive.vercel.app/principal/', {
+    const informacion = await fetch('https://react-rho-olive.vercel.app/', {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -55,7 +63,7 @@ const Principal = () => {
   // Acciones con la tabla.
   const seleccionarEliminarFila = (id) => {
     if (idSeleccionados.includes(id)) return;
-    setIdSeleccionados([...idSeleccionados, id]);
+    setIdSeleccionados(prev => [...prev, id]);
   };
 
   const eliminarSeleccion = (id) => {
@@ -65,16 +73,67 @@ const Principal = () => {
     }
   };
 
-  const seleccionarFila = (id) => {
-    setProductoSeleccionado(id);
+  const seleccionarFila = (producto) => {
+    setProductoSeleccionado(producto);
   }
 
   const anadirProducto = () => {
-    setMostrarAnadir(true)
+    setMostrarModalAnadir(true)
   }
 
+  const editarProducto = () => {
+    setMostrarModalEditar(true)
+  }
+
+  const agregarProducto = async (e, producto) => {
+    e.preventDefault()
+    if (!producto.nombre || !producto.precio_unidad || !producto.existente || !producto.actual || !producto.vendido) return
+
+    productos.length > 0 ? setProductos(productos => [...productos, producto]) : setProductos([...[], producto])
+    cerrarModalAnadir()
+    await sendPostRequest('https://react-rho-olive.vercel.app/agregarProducto', producto);
+  }
+
+  const editarProductoSeleccionado = async (e, nuevoProducto) => {
+    e.preventDefault()
+    // Creo el codigo de un put.
+    const productoActualizado = actualizarProductoExistente(nuevoProducto);
+
+    const solicitud = await fetch("https://react-rho-olive.vercel.app/actualizarProducto", {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(productoActualizado)
+    })
+    const respuestaSolicitud = await solicitud.json();
+    if (respuestaSolicitud.acceso) {
+      console.log("Producto Editado correctamente")
+    }
+  }
+
+
+  const actualizarProductoExistente = (nuevoProducto) => {
+    const nuevoProductoCreado = { id: productoSeleccionado.id, ...nuevoProducto }
+    const copiaProductos = productos.map((producto) => producto.id === productoSeleccionado.id ? nuevoProductoCreado : producto)
+    setProductos(copiaProductos) // Establece el valor del array con el nuevo valor.
+    setProductoSeleccionado(nuevoProductoCreado)
+    cerrarModalEditar()
+    return nuevoProductoCreado;
+  }
+
+  useEffect(() => { // se calculan precios solo si productos cambia}
+    let total = 0;
+    productos?.map(producto => {
+      total += producto.precio_unidad * producto.existente
+    })
+
+    setTotal(prev => prev = total)
+  }, [productos])
+
   return (
-    <Contexto.Provider value={{ productos, setProductos, productoSeleccionado, seleccion, setSeleccion}}>
+    <Contexto.Provider value={{ productos, setProductos, productoSeleccionado, seleccion, setSeleccion }}>
       <div className="principal flex-center">
         <h1 className="titulo">Lista de Productos</h1>
         {loading === true && <h2>Cargando...</h2>}
@@ -116,8 +175,8 @@ const Principal = () => {
               </span>
             )}
 
-            {!seleccion && (
-              <span className="icono anadir" >
+            {productoSeleccionado && (
+              <span className="icono anadir" onClick={editarProducto} >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -191,11 +250,18 @@ const Principal = () => {
             )}
           </div>
         </div>
-
-        {mostrarAnadir && <Anadir cerrarModal={cerrarModal} />}
+        {/** Modal para anadir el producto */}
+        {mostrarModalAnadir && <ModalProducto cerrarModal={cerrarModalAnadir} funcionModal={agregarProducto} />}
+        {/** Modal para editar el producto */}
+        {mostrarModalEditar && <ModalProducto cerrarModal={cerrarModalEditar} funcionModal={editarProductoSeleccionado} productoSeleccionado={productoSeleccionado} />}
+        <div className="flex-center" style={{flexDirection: 'column'}}>
+          <span className="venta-total">Total a recibir: Q{total}</span>
+          {productoSeleccionado && <span className="venta-total">Total producto seleccionado: Q{productoSeleccionado.precio_unidad * productoSeleccionado.existente}</span>}
+        </div>
 
       </div>
     </Contexto.Provider>
+
   );
 }
 
