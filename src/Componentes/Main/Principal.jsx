@@ -9,7 +9,7 @@ import { Contexto } from "../../Contexto";
 import usePost from '../../../hooks/usePost'
 
 const Principal = () => {
-  const { loading, acceso, data } = useGet("http://localhost:3500/principal/");
+  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/");
   const navigate = useNavigate();
   const [seleccion, setSeleccion] = useState(false); // Si la seleccion esta activa quiere decir que va a eliminar al menos en esta version es la unica accion que se puede hacer.
   const [idSeleccionados, setIdSeleccionados] = useState([]);
@@ -42,7 +42,7 @@ const Principal = () => {
   }
 
   const confirmarEliminar = async () => {
-    const informacion = await fetch('http://localhost:3500/principal/', {
+    const informacion = await fetch('https://react-rho-olive.vercel.app/', {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -91,7 +91,7 @@ const Principal = () => {
 
     productos.length > 0 ? setProductos(productos => [...productos, producto]) : setProductos([...[], producto])
     cerrarModalAnadir()
-    await sendPostRequest('http://localhost:3500/principal/agregarProducto', producto);
+    await sendPostRequest('https://react-rho-olive.vercel.app/agregarProducto', producto);
   }
 
   const editarProductoSeleccionado = async (e, nuevoProducto) => {
@@ -99,7 +99,7 @@ const Principal = () => {
     // Creo el codigo de un put.
     const productoActualizado = actualizarProductoExistente(nuevoProducto);
 
-    const solicitud = await fetch("http://localhost:3500/principal/actualizarProducto", {
+    const solicitud = await fetch("https://react-rho-olive.vercel.app/actualizarProducto", {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -108,7 +108,6 @@ const Principal = () => {
       body: JSON.stringify(productoActualizado)
     })
     const respuestaSolicitud = await solicitud.json();
-    console.log(respuestaSolicitud)
     if (respuestaSolicitud.acceso) {
       console.log("Producto Editado correctamente")
     }
