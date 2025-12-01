@@ -18,7 +18,7 @@ const Tabla = ({
           {seleccion && <th></th>}
           <th>Producto</th>
           <th>Existencia</th>
-          <th>De hoy</th>
+          <th>Disponible para hoy</th>
           <th>Vendida</th>
           <th>P/ Unidad</th>
         </tr>

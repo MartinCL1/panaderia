@@ -7,7 +7,6 @@ const FilaTabla = ({ producto, seleccionarEliminarFila, eliminarSeleccion, selec
 
   const marcarFila = (e) => {
     seleccionarEliminarFila(producto.id)
-    console.log(producto)
     if (!e.target.checked) {
       eliminarSeleccion(producto.id)
       return
@@ -15,10 +14,10 @@ const FilaTabla = ({ producto, seleccionarEliminarFila, eliminarSeleccion, selec
   }
 
   return (
-    <tr onClick={() => seleccionarFila(producto.id)} className={productoSeleccionado === producto.id ? "seleccionado" : ""} >
+    <tr onClick={() => seleccionarFila(producto)} className={productoSeleccionado?.id === producto.id ? "seleccionado" : ""} ref={referencia} >
       {
         seleccion && <td>
-          <input type="checkbox" ref={referencia} onClick={marcarFila} />
+          <input type="checkbox" onClick={marcarFila} />
         </td>
       }
       <td> {producto.nombre} </td>

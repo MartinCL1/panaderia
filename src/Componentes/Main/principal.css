@@ -35,7 +35,6 @@
     stroke: white;
 }
 
-
 .anadir-modal {
     position: fixed;
     width: 100%;
@@ -90,11 +89,12 @@
     border: none;
     color: rgb(8, 8, 8);
     padding: 8px 4px;
-    box-shadow: 1px 2px 4px rgba(46, 44, 44, 0.692);
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.699);
+    transition: .5s box-shadow;
 }
 
 .cancelar {
-    background-color: rgb(213, 30, 30);
+    background-color: rgba(241, 28, 28, 0.904);
 }
 
 .cancelar:hover {
@@ -110,6 +110,12 @@
 } 
 
 .cancelar:hover,
-.aceptar:hover {
+.aceptar:hover {    
+    box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.699);
     color: white;
+}
+
+.venta-total {
+    color: #3b3b3b;
+    font-size: 20px;
 }
