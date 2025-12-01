@@ -9,7 +9,7 @@ import { Contexto } from "../../Contexto";
 import usePost from '../../../hooks/usePost'
 
 const Principal = () => {
-  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/");
+  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/principal");
   const navigate = useNavigate();
   const [seleccion, setSeleccion] = useState(false); // Si la seleccion esta activa quiere decir que va a eliminar al menos en esta version es la unica accion que se puede hacer.
   const [idSeleccionados, setIdSeleccionados] = useState([]);
@@ -121,6 +121,15 @@ const Principal = () => {
     cerrarModalEditar()
     return nuevoProductoCreado;
   }
+
+  useEffect(() => { // se calculan precios solo si productos cambia}
+    let total = 0;
+    productos?.map(producto => {
+      total += producto.precio_unidad * producto.existente
+    })
+
+    setTotal(total)
+  }, [productos])
 
   return (
     <Contexto.Provider value={{ productos, setProductos, productoSeleccionado, seleccion, setSeleccion }}>
@@ -244,12 +253,11 @@ const Principal = () => {
         {mostrarModalAnadir && <ModalProducto cerrarModal={cerrarModalAnadir} funcionModal={agregarProducto} />}
         {/** Modal para editar el producto */}
         {mostrarModalEditar && <ModalProducto cerrarModal={cerrarModalEditar} funcionModal={editarProductoSeleccionado} productoSeleccionado={productoSeleccionado} />}
-        { total &&
-          <div className="flex-center" style={{ flexDirection: 'column' }}>
-            <span className="venta-total">Total a recibir: Q{total}</span>
-            {productoSeleccionado && <span className="venta-total">Total producto seleccionado: Q{productoSeleccionado.precio_unidad * productoSeleccionado.existente}</span>}
-          </div>
-        }
+        <div className="flex-center" style={{ flexDirection: 'column' }}>
+          <span className="venta-total">Total a recibir: Q{total}</span>
+          {productoSeleccionado && <span className="venta-total">Total producto seleccionado: Q{productoSeleccionado.precio_unidad * productoSeleccionado.existente}</span>}
+        </div>
+
       </div>
     </Contexto.Provider>
 
