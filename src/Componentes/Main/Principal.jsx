@@ -9,7 +9,7 @@ import { Contexto } from "../../Contexto";
 import usePost from '../../../hooks/usePost'
 
 const Principal = () => {
-  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/login");
+  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/");
   const navigate = useNavigate();
   const [seleccion, setSeleccion] = useState(false); // Si la seleccion esta activa quiere decir que va a eliminar al menos en esta version es la unica accion que se puede hacer.
   const [idSeleccionados, setIdSeleccionados] = useState([]);
@@ -18,7 +18,7 @@ const Principal = () => {
   const [mostrarModalAnadir, setMostrarModalAnadir] = useState(false)
   const { sendPostRequest } = usePost();
   const [mostrarModalEditar, setMostrarModalEditar] = useState(false)
-  const [total, setTotal] = useState(0)
+  const [total, setTotal] = useState(null)
 
   if (acceso === false && loading === false) {
     navigate("/login", { replace: true });
@@ -112,7 +112,7 @@ const Principal = () => {
       console.log("Producto Editado correctamente")
     }
   }
-  
+
   const actualizarProductoExistente = (nuevoProducto) => {
     const nuevoProductoCreado = { id: productoSeleccionado.id, ...nuevoProducto }
     const copiaProductos = productos.map((producto) => producto.id === productoSeleccionado.id ? nuevoProductoCreado : producto)
@@ -129,7 +129,7 @@ const Principal = () => {
     })
 
     setTotal(prev => prev = total)
-  }, [productos])
+  }, [productos, total])
 
   return (
     <Contexto.Provider value={{ productos, setProductos, productoSeleccionado, seleccion, setSeleccion }}>
@@ -253,12 +253,12 @@ const Principal = () => {
         {mostrarModalAnadir && <ModalProducto cerrarModal={cerrarModalAnadir} funcionModal={agregarProducto} />}
         {/** Modal para editar el producto */}
         {mostrarModalEditar && <ModalProducto cerrarModal={cerrarModalEditar} funcionModal={editarProductoSeleccionado} productoSeleccionado={productoSeleccionado} />}
-        
-        <div className="flex-center" style={{flexDirection: 'column'}}>
-          <span className="venta-total">Total a recibir: Q{total}</span>
-          {productoSeleccionado && <span className="venta-total">Total producto seleccionado: Q{productoSeleccionado.precio_unidad * productoSeleccionado.existente}</span>}
-        </div>
-
+        { total &&
+          <div className="flex-center" style={{ flexDirection: 'column' }}>
+            <span className="venta-total">Total a recibir: Q{total}</span>
+            {productoSeleccionado && <span className="venta-total">Total producto seleccionado: Q{productoSeleccionado.precio_unidad * productoSeleccionado.existente}</span>}
+          </div>
+        }
       </div>
     </Contexto.Provider>
 
