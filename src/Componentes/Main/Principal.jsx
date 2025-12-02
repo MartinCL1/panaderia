@@ -42,7 +42,7 @@ const Principal = () => {
   }
 
   const confirmarEliminar = async () => {
-    const informacion = await fetch('http://localhost:3500/', {
+    const informacion = await fetch('http://localhost:3500/principal', {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -91,7 +91,7 @@ const Principal = () => {
 
     productos.length > 0 ? setProductos(productos => [...productos, producto]) : setProductos([...[], producto])
     cerrarModalAnadir()
-    await sendPostRequest('http://localhost:3500/agregarProducto', producto);
+    await sendPostRequest('http://localhost:3500/principal/agregarProducto/', producto);
   }
 
   const editarProductoSeleccionado = async (e, nuevoProducto) => {
@@ -99,7 +99,7 @@ const Principal = () => {
     // Creo el codigo de un put.
     const productoActualizado = actualizarProductoExistente(nuevoProducto);
 
-    const solicitud = await fetch("http://localhost:3500/actualizarProducto", {
+    const solicitud = await fetch("http://localhost:3500/principal/actualizarProducto", {
       method: "PUT",
       credentials: "include",
       headers: {
