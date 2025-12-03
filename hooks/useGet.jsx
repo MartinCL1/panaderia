@@ -14,7 +14,7 @@ const useGet = (url) => {
         credentials: "include",
         method: "GET",
       });
-
+      console.log(responseRequest)
       const responseStatus = await responseRequest.json(); // retorna el acceso.
       setLoading(false);
       if (!responseStatus.acceso) return setAcceso(false);
