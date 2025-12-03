@@ -21,7 +21,7 @@ const Principal = () => {
   const [mostrarModalEditar, setMostrarModalEditar] = useState(false)
   const [total, setTotal] = useState(0)
   const [pagina, setPagina] = useState(1)
-  const { loading, acceso, data } = useGet(`http://localhost:3500/principal/obtenerData/${pagina}`);
+  const { loading, acceso, data } = useGet(`https://react-rho-olive.vercel.app/principal/obtenerData/${pagina}`);
 
   if (acceso === false && loading === false) {
     navigate("/login", { replace: true });
@@ -45,7 +45,7 @@ const Principal = () => {
   }
 
   const confirmarEliminar = async () => {
-    const informacion = await fetch('http://localhost:3500/principal/', {
+    const informacion = await fetch('https://react-rho-olive.vercel.app/principal/', {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -100,7 +100,7 @@ const Principal = () => {
 
 
     cerrarModalAnadir()
-    await sendPostRequest('http://localhost:3500/principal/agregarProducto/', producto);
+    await sendPostRequest('https://react-rho-olive.vercel.app/principal/agregarProducto/', producto);
   }
 
   const editarProductoSeleccionado = async (e, nuevoProducto) => {
@@ -108,7 +108,7 @@ const Principal = () => {
     // Creo el codigo de un put.
     const productoActualizado = actualizarProductoExistente(nuevoProducto);
 
-    const solicitud = await fetch("http://localhost:3500/principal/actualizarProducto", {
+    const solicitud = await fetch("https://react-rho-olive.vercel.app/principal/actualizarProducto", {
       method: "PUT",
       credentials: "include",
       headers: {
