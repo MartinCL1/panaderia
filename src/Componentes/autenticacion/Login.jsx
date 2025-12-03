@@ -5,8 +5,8 @@ import useAuth from "../../../hooks/useAuth";
 import usePost from "../../../hooks/usePost";
 
 const Login = () => {
-  const { acceso, cargando } = useAuth("https://react-rho-olive.vercel.app/login");
-  const {datos, loading, sendPostRequest, error} = usePost();
+  const { acceso, cargando } = useAuth("http://localhost:3500/login");
+  const { datos, loading, sendPostRequest, error } = usePost();
 
   const tiempoLocal = new Date();
   const [saludo, setSaludo] = useState("");
@@ -25,18 +25,18 @@ const Login = () => {
         return setSaludo("Buenas tardes");
       } else return setSaludo("Buenas noches");
     }
-    if (acceso && !cargando) return navigate("/home"); 
+    if (acceso && !cargando) return navigate("/home");
 
   }, [acceso, cargando]);
 
   const iniciarSesion = (e) => {
     e.preventDefault();
-    sendPostRequest("https://react-rho-olive.vercel.app/login", credenciales);
+    sendPostRequest("http://localhost:3500/login", credenciales);
   };
 
   useEffect(() => {
-    if(!error && !loading && datos) {
-      navigate('/home', {replace: true})
+    if (!error && !loading && datos) {
+      navigate('/home', { replace: true })
     }
   }, [datos, loading, error])
 
@@ -48,36 +48,38 @@ const Login = () => {
 
   return (
     <section className="login-wrapper flex-center">
-      <div className="login">
-        <div className="encabezado-login flex-center">
-          <h1>{saludo}</h1>
-          <span>Ingresa tus credenciales</span>
-        </div>
-
-        <div className="login-form flex-center">
-          <div className="wrapper-informacion flex-center">
-            <input
-              type="text"
-              placeholder="Nombre de usuario"
-              name="nombreUsuario"
-              onChange={cambiarEstado}
-            />
-            <input
-              type="password"
-              placeholder="contraseña"
-              name="contrasena"
-              onChange={cambiarEstado}
-            />
+      {!acceso && !cargando &&
+        <div className="login">
+          <div className="encabezado-login flex-center">
+            <h1>{saludo}</h1>
+            <span>Ingresa tus credenciales</span>
           </div>
 
-          <div className="botones flex-center">
-            <Link className="aceptar" onClick={iniciarSesion}>
-              Iniciar Sesion
-            </Link>
+          <div className="login-form flex-center">
+            <div className="wrapper-informacion flex-center">
+              <input
+                type="text"
+                placeholder="Nombre de usuario"
+                name="nombreUsuario"
+                onChange={cambiarEstado}
+              />
+              <input
+                type="password"
+                placeholder="contraseña"
+                name="contrasena"
+                onChange={cambiarEstado}
+              />
+            </div>
+
+            <div className="botones flex-center">
+              <Link className="aceptar" onClick={iniciarSesion}>
+                Iniciar Sesion
+              </Link>
+            </div>
+            <Link>Olvidaste tu contrasena?</Link>
           </div>
-          <Link>Olvidaste tu contrasena?</Link>
         </div>
-      </div>
+      }
     </section>
   );
 };
