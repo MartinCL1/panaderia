@@ -8,15 +8,9 @@ import ModalProducto from "../modal/ModalProducto";
 import { Contexto } from "../../Contexto";
 import usePost from '../../../hooks/usePost'
 
+// Crear un mensaje personalizado de cuando se hizo una tarea con exito o no.
+
 const Principal = () => {
-<<<<<<< HEAD
-  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/principal");
-=======
-<<<<<<< HEAD
-  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/login");
-=======
->>>>>>> desarrollo
->>>>>>> contextApi
   const navigate = useNavigate();
   const [seleccion, setSeleccion] = useState(false); // Si la seleccion esta activa quiere decir que va a eliminar al menos en esta version es la unica accion que se puede hacer.
   const [idSeleccionados, setIdSeleccionados] = useState([]);
@@ -25,7 +19,9 @@ const Principal = () => {
   const [mostrarModalAnadir, setMostrarModalAnadir] = useState(false)
   const { sendPostRequest } = usePost();
   const [mostrarModalEditar, setMostrarModalEditar] = useState(false)
-  const [total, setTotal] = useState(null)
+  const [total, setTotal] = useState(0)
+  const [pagina, setPagina] = useState(1)
+  const { loading, acceso, data } = useGet(`http://localhost:3500/principal/obtenerData/${pagina}`);
 
   if (acceso === false && loading === false) {
     navigate("/login", { replace: true });
@@ -49,7 +45,7 @@ const Principal = () => {
   }
 
   const confirmarEliminar = async () => {
-    const informacion = await fetch('https://react-rho-olive.vercel.app/principal', {
+    const informacion = await fetch('http://localhost:3500/principal/', {
       method: "DELETE",
       credentials: "include",
       headers: {
@@ -96,9 +92,15 @@ const Principal = () => {
     e.preventDefault()
     if (!producto.nombre || !producto.precio_unidad || !producto.existente || !producto.actual || !producto.vendido) return
 
-    productos.length > 0 ? setProductos(productos => [...productos, producto]) : setProductos([...[], producto])
+    if (productos.length > 0 && productos.length < 10) {
+      setProductos(productos => [...productos, producto])
+    } else if (!productos.length > 0) {
+      setProductos([producto])
+    }
+
+
     cerrarModalAnadir()
-    await sendPostRequest('https://react-rho-olive.vercel.app/principal/agregarProducto', producto);
+    await sendPostRequest('http://localhost:3500/principal/agregarProducto/', producto);
   }
 
   const editarProductoSeleccionado = async (e, nuevoProducto) => {
@@ -106,7 +108,7 @@ const Principal = () => {
     // Creo el codigo de un put.
     const productoActualizado = actualizarProductoExistente(nuevoProducto);
 
-    const solicitud = await fetch("https://react-rho-olive.vercel.app/principal/actualizarProducto", {
+    const solicitud = await fetch("http://localhost:3500/principal/actualizarProducto", {
       method: "PUT",
       credentials: "include",
       headers: {
@@ -119,15 +121,7 @@ const Principal = () => {
       console.log("Producto Editado correctamente")
     }
   }
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> desarrollo
->>>>>>> contextApi
   const actualizarProductoExistente = (nuevoProducto) => {
     const nuevoProductoCreado = { id: productoSeleccionado.id, ...nuevoProducto }
     const copiaProductos = productos.map((producto) => producto.id === productoSeleccionado.id ? nuevoProductoCreado : producto)
@@ -138,13 +132,23 @@ const Principal = () => {
   }
 
   useEffect(() => { // se calculan precios solo si productos cambia}
-    let total = 0;
-    productos?.map(producto => {
-      total += producto.precio_unidad * producto.existente
-    })
+    if (productos) {
+      let total = 0;
+      productos?.map(producto => {
+        total += producto.precio_unidad * producto.existente
+      })
+      setTotal(total)
+    }
 
-    setTotal(total)
   }, [productos])
+
+  const paginarSiguiente = async () => {
+    setPagina((prev) => prev + 1)
+  }
+
+  const paginaAnterior = async () => {
+    setPagina((prev) => prev - 1);
+  }
 
   return (
     <Contexto.Provider value={{ productos, setProductos, productoSeleccionado, seleccion, setSeleccion }}>
@@ -162,122 +166,115 @@ const Principal = () => {
             }
           </div>
         )}
+        {
+          (acceso == true && productos) && 
+          <div className="opciones">
+            <div className="control-informacion">
+              <button className="mostrar-informacion" disabled={pagina == 1} onClick={paginaAnterior} >Atras</button>
+              <button className="mostrar-informacion" disabled={productos?.length < 10} onClick={paginarSiguiente}>Siguiente</button>
+            </div>
 
-        <div className="opciones">
-          <div className="control-informacion">
-            <button className="mostrar-informacion">Atras</button>
-            <button className="mostrar-informacion">Siguiente</button>
+            <div className="opciones-informacion">
+              {!seleccion && (
+                <span className="icono anadir" onClick={anadirProducto}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#353b3a"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                  </svg>
+                </span>
+              )}
+
+              {productoSeleccionado && (
+                <span className="icono anadir" onClick={editarProducto} >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#353b3a"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
+                  </svg>
+                </span>
+              )}
+
+              {seleccion && (
+                <span className="icono eliminar" onClick={() => setSeleccion(false)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#353b3a"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </span>
+              )}
+              {seleccion && (
+                <span className="icono aceptar" onClick={confirmarEliminar}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#353b3a"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </span>
+              )}
+              {!seleccion && (
+                <span className="icono eliminar" onClick={eliminarFilas}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#353b3a"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                  </svg>
+                </span>
+              )}
+            </div>
           </div>
-
-          <div className="opciones-informacion">
-            {!seleccion && (
-              <span className="icono anadir" onClick={anadirProducto}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#353b3a"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="12" y1="5" x2="12" y2="19"></line>
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-              </span>
-            )}
-
-            {productoSeleccionado && (
-              <span className="icono anadir" onClick={editarProducto} >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#353b3a"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
-                </svg>
-              </span>
-            )}
-
-            {seleccion && (
-              <span className="icono eliminar" onClick={() => setSeleccion(false)}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#353b3a"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </span>
-            )}
-            {seleccion && (
-              <span className="icono aceptar" onClick={confirmarEliminar}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#353b3a"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-              </span>
-            )}
-            {!seleccion && (
-              <span className="icono eliminar" onClick={eliminarFilas}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="#353b3a"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="3 6 5 6 21 6"></polyline>
-                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                  <line x1="10" y1="11" x2="10" y2="17"></line>
-                  <line x1="14" y1="11" x2="14" y2="17"></line>
-                </svg>
-              </span>
-            )}
-          </div>
-        </div>
+        }
         {/** Modal para anadir el producto */}
         {mostrarModalAnadir && <ModalProducto cerrarModal={cerrarModalAnadir} funcionModal={agregarProducto} />}
         {/** Modal para editar el producto */}
         {mostrarModalEditar && <ModalProducto cerrarModal={cerrarModalEditar} funcionModal={editarProductoSeleccionado} productoSeleccionado={productoSeleccionado} />}
-<<<<<<< HEAD
         <div className="flex-center" style={{ flexDirection: 'column' }}>
-=======
-<<<<<<< HEAD
-        
-        <div className="flex-center" style={{flexDirection: 'column'}}>
-=======
-        <div className="flex-center" style={{ flexDirection: 'column' }}>
->>>>>>> desarrollo
->>>>>>> contextApi
           <span className="venta-total">Total a recibir: Q{total}</span>
           {productoSeleccionado && <span className="venta-total">Total producto seleccionado: Q{productoSeleccionado.precio_unidad * productoSeleccionado.existente}</span>}
         </div>
