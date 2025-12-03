@@ -171,7 +171,7 @@ const Principal = () => {
           <div className="opciones">
             <div className="control-informacion">
               <button className="mostrar-informacion" disabled={pagina == 1} onClick={paginaAnterior} >Atras</button>
-              <button className="mostrar-informacion" disabled={productos?.length < 10} onClick={paginarSiguiente}>Siguiente</button>
+              <button className="mostrar-informacion" disabled={productos?.length <= 10} onClick={paginarSiguiente}>Siguiente</button>
             </div>
 
             <div className="opciones-informacion">
