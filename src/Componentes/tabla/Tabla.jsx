@@ -24,7 +24,7 @@ const Tabla = ({
         </tr>
       </thead>
       <tbody>
-        {productos.map((producto, index) => (
+        {productos?.map((producto, index) => (
           <FilaTabla
             key={index}
             eliminarSeleccion={eliminarSeleccion}
