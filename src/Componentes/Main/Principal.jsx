@@ -9,7 +9,14 @@ import { Contexto } from "../../Contexto";
 import usePost from '../../../hooks/usePost'
 
 const Principal = () => {
+<<<<<<< HEAD
   const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/principal");
+=======
+<<<<<<< HEAD
+  const { loading, acceso, data } = useGet("https://react-rho-olive.vercel.app/login");
+=======
+>>>>>>> desarrollo
+>>>>>>> contextApi
   const navigate = useNavigate();
   const [seleccion, setSeleccion] = useState(false); // Si la seleccion esta activa quiere decir que va a eliminar al menos en esta version es la unica accion que se puede hacer.
   const [idSeleccionados, setIdSeleccionados] = useState([]);
@@ -112,7 +119,15 @@ const Principal = () => {
       console.log("Producto Editado correctamente")
     }
   }
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+  
+=======
+
+>>>>>>> desarrollo
+>>>>>>> contextApi
   const actualizarProductoExistente = (nuevoProducto) => {
     const nuevoProductoCreado = { id: productoSeleccionado.id, ...nuevoProducto }
     const copiaProductos = productos.map((producto) => producto.id === productoSeleccionado.id ? nuevoProductoCreado : producto)
@@ -253,7 +268,16 @@ const Principal = () => {
         {mostrarModalAnadir && <ModalProducto cerrarModal={cerrarModalAnadir} funcionModal={agregarProducto} />}
         {/** Modal para editar el producto */}
         {mostrarModalEditar && <ModalProducto cerrarModal={cerrarModalEditar} funcionModal={editarProductoSeleccionado} productoSeleccionado={productoSeleccionado} />}
+<<<<<<< HEAD
         <div className="flex-center" style={{ flexDirection: 'column' }}>
+=======
+<<<<<<< HEAD
+        
+        <div className="flex-center" style={{flexDirection: 'column'}}>
+=======
+        <div className="flex-center" style={{ flexDirection: 'column' }}>
+>>>>>>> desarrollo
+>>>>>>> contextApi
           <span className="venta-total">Total a recibir: Q{total}</span>
           {productoSeleccionado && <span className="venta-total">Total producto seleccionado: Q{productoSeleccionado.precio_unidad * productoSeleccionado.existente}</span>}
         </div>
