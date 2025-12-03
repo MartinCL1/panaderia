@@ -34,19 +34,19 @@ const ModalProducto = ({ cerrarModal, funcionModal, productoSeleccionado }) => {
                 </div>
                 <div className="wrapper-input">
                     <label htmlFor="precio">Precio</label>
-                    <input type="number" pattern="^\d+(\.\d{2})$" id="precio" name="precio_unidad" value={producto.precio_unidad} required onChange={handleChange} />
+                    <input type="tel" pattern="^\d+(\.\d{2})$" id="precio" name="precio_unidad" value={producto.precio_unidad} required onChange={handleChange} />
                 </div>
                 <div className="wrapper-input">
                     <label htmlFor="existente">Existente</label>
-                    <input type="number" pattern="^\d+$" id="existente" name="existente" value={producto.existente} required onChange={handleChange} />
+                    <input type="tel" pattern="^\d+$" id="existente" name="existente" value={producto.existente} required onChange={handleChange} />
                 </div>
                 <div className="wrapper-input">
                     <label htmlFor="actual">Actual</label>
-                    <input type="number" pattern="^\d+$" id="actual" name="actual" value={producto.actual} required onChange={handleChange} />
+                    <input type="tel" pattern="^\d+$" id="actual" name="actual" value={producto.actual} required onChange={handleChange} />
                 </div>
                 <div className="wrapper-input">
                     <label htmlFor="vendido">Vendido</label>
-                    <input type="number" pattern="^\d+$" id="vendido" name="vendido" value={producto.vendido} required onChange={handleChange} />
+                    <input type="tel" pattern="^\d+$" id="vendido" name="vendido" value={producto.vendido} required onChange={handleChange} />
                 </div>
 
                 <div className="wrapper-botones">
