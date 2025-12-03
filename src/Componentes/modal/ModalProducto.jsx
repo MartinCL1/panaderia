@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 const ModalProducto = ({ cerrarModal, funcionModal, productoSeleccionado }) => {
     const referenciaModal = useRef(null)
-    const [producto, setProducto] = useState( productoSeleccionado || {
+    const [producto, setProducto] = useState(productoSeleccionado || {
         id: uuidv4(),
         nombre: "",
         precio_unidad: "",
@@ -14,6 +14,14 @@ const ModalProducto = ({ cerrarModal, funcionModal, productoSeleccionado }) => {
 
     const handleChange = (e) => {
         e.preventDefault()
+        const nombrePropiedad = e.target.name;
+        let valorPropiedad = e.target.value
+        if (nombrePropiedad !== "precio_unidad" && valorPropiedad.includes('.')) {
+            return
+        }
+        if (nombrePropiedad !== "nombre") {
+            e.target.value = isNaN(valorPropiedad) ? "" : valorPropiedad
+        }
         setProducto({ ...producto, [e.target.name]: e.target.value })
     }
 
@@ -26,19 +34,19 @@ const ModalProducto = ({ cerrarModal, funcionModal, productoSeleccionado }) => {
                 </div>
                 <div className="wrapper-input">
                     <label htmlFor="precio">Precio</label>
-                    <input type="number" id="precio" name="precio_unidad" value={producto.precio_unidad} required onChange={handleChange} />
+                    <input pattern="^\d+(\.\d{2})$" id="precio" name="precio_unidad" value={producto.precio_unidad} required onChange={handleChange} />
                 </div>
                 <div className="wrapper-input">
                     <label htmlFor="existente">Existente</label>
-                    <input type="number" id="existente" name="existente" value={producto.existente} required onChange={handleChange} />
+                    <input pattern="^\d+$" id="existente" name="existente" value={producto.existente} required onChange={handleChange} />
                 </div>
                 <div className="wrapper-input">
                     <label htmlFor="actual">Actual</label>
-                    <input type="number" id="actual" name="actual" value={producto.actual} required onChange={handleChange} />
+                    <input pattern="^\d+$" id="actual" name="actual" value={producto.actual} required onChange={handleChange} />
                 </div>
                 <div className="wrapper-input">
                     <label htmlFor="vendido">Vendido</label>
-                    <input type="number" id="vendido" name="vendido" value={producto.vendido} required onChange={handleChange} />
+                    <input pattern="^\d+$" id="vendido" name="vendido" value={producto.vendido} required onChange={handleChange} />
                 </div>
 
                 <div className="wrapper-botones">

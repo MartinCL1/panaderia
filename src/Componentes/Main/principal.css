@@ -117,9 +117,12 @@
 
 .venta-total {
     color: #3b3b3b;
+<<<<<<< HEAD
     font-size: 20px;
 }
 
 .venta-total {
     font-size: clamp(12px, 2.5vw, 16px);
+=======
+>>>>>>> desarrollo
 }
